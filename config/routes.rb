@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   # Set home page as the root
   root 'home#index'
   
+  # Interactive side-by-side view
+  get 'interactive', to: 'home#interactive'
+  
   # Individual section pages
   resources :experiences, only: [:index]
   resources :educations, only: [:index]

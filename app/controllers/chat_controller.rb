@@ -7,12 +7,12 @@ class ChatController < ApplicationController
 
   def message
     # Get question from JSON params if available
-    params_json = request.format.json? ? JSON.parse(request.body.read) rescue nil : nil
+    params_json = request.format.json? ? (JSON.parse(request.body.read) rescue nil) : nil
     question = params_json&.dig('question') || params[:question]
     
     if question.present?
-      # Use :: to reference the global namespace for the OpenaiService class
-      openai_service = ::OpenaiService.new
+      # Use OpenaiService class
+      openai_service = OpenaiService.new
       @response = openai_service.resume_chat(question)
     else
       @response = "Please ask a question about Maxwell's resume."

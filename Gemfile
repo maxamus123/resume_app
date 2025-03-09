@@ -68,6 +68,7 @@ group :development, :test do
   
   # Dotenv for managing environment variables
   gem "dotenv-rails"
+  gem 'rubocop', require: false
 end
 
 group :development do
