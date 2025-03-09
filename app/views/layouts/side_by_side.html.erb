@@ -12,19 +12,59 @@
 
   <body>
     <div class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
-      <div class="container mx-auto py-6 px-4">
+      <div class="container mx-auto py-4 px-3 sm:py-6 sm:px-4">
+        <!-- Mobile Chat Toggle Button (shown only on mobile) -->
+        <div class="fixed bottom-4 right-4 lg:hidden z-20">
+          <button id="chat-toggle" class="bg-blue-600 text-white p-3 rounded-full shadow-lg flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+            </svg>
+          </button>
+        </div>
+        
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <!-- Resume View (takes up 2/3 of the space on large screens) -->
           <div class="lg:col-span-2">
             <%= yield %>
           </div>
           
-          <!-- Chat Panel (takes up 1/3 of the space on large screens) -->
-          <div class="h-[calc(100vh-6rem)] sticky top-6">
+          <!-- Chat Panel -->
+          <!-- On mobile: fixed at bottom, initially collapsed -->
+          <!-- On desktop: takes 1/3 of screen, full height, sticky -->
+          <div id="chat-panel" class="fixed bottom-0 left-0 right-0 z-10 h-[40vh] transform translate-y-full transition-transform duration-300 ease-in-out lg:relative lg:h-[calc(100vh-6rem)] lg:sticky lg:top-6 lg:transform-none lg:z-0 lg:transition-none">
             <%= render partial: "chat/chat_panel" %>
           </div>
         </div>
       </div>
     </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const chatToggle = document.getElementById('chat-toggle');
+        const chatPanel = document.getElementById('chat-panel');
+        let isChatOpen = false;
+        
+        // Only add toggle functionality on mobile
+        if (chatToggle) {
+          chatToggle.addEventListener('click', function() {
+            isChatOpen = !isChatOpen;
+            if (isChatOpen) {
+              chatPanel.classList.remove('translate-y-full');
+            } else {
+              chatPanel.classList.add('translate-y-full');
+            }
+          });
+        }
+        
+        // Listen for window resize and reset chat panel position on desktop
+        window.addEventListener('resize', function() {
+          if (window.innerWidth >= 1024) { // lg breakpoint in Tailwind
+            chatPanel.classList.remove('translate-y-full');
+          } else if (!isChatOpen) {
+            chatPanel.classList.add('translate-y-full');
+          }
+        });
+      });
+    </script>
   </body>
 </html> 
