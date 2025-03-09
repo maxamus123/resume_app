@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  # Chat feature routes
+  get 'chat', to: 'chat#index'
+  post 'chat/message', to: 'chat#message'
+  
   # Set home page as the root
   root 'home#index'
   

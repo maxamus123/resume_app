@@ -29,6 +29,12 @@ gem "jbuilder"
 # Tailwind CSS for styling [https://tailwindcss.com/]
 gem "tailwindcss-rails"
 
+# HTTP client for making requests to external APIs
+gem "faraday"
+
+# JSON Web Token for secure API authentication
+gem "jwt"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
@@ -59,6 +65,9 @@ group :development, :test do
   
   # Faker for generating test data
   gem "faker"
+  
+  # Dotenv for managing environment variables
+  gem "dotenv-rails"
 end
 
 group :development do
