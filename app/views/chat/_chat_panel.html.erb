@@ -115,8 +115,15 @@ document.addEventListener('DOMContentLoaded', function() {
   // Add event listeners to suggested questions
   suggestedQuestions.forEach(button => {
     button.addEventListener('click', function() {
-      questionInput.value = this.textContent;
-      questionInput.focus();
+      const questionText = this.textContent.trim();
+      questionInput.value = questionText;
+      
+      // Automatically submit the form when clicking on a suggested question
+      if (questionText) {
+        // Trigger the form submission
+        const submitEvent = new Event('submit', { cancelable: true });
+        form.dispatchEvent(submitEvent);
+      }
     });
   });
   
@@ -126,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const question = questionInput.value.trim();
     if (!question) return;
     
-    // Add user message to chat
+    // Add user message to chat - this should stay visible throughout
     addMessage('You', question, 'bg-gray-100');
     
     // Show loading indicator
@@ -143,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(response => response.json())
     .then(data => {
-      // Replace loading message with response
+      // Replace only the loading message with response
       removeMessage(loadingId);
       addMessage('AI Assistant', data.response, 'bg-blue-50');
     })
@@ -162,10 +169,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const messageDiv = document.createElement('div');
     messageDiv.id = messageId;
     messageDiv.className = `${bgClass} p-3 rounded-lg`;
-    messageDiv.innerHTML = `
-      <p class="font-medium text-gray-800">${sender}</p>
-      <p>${content}</p>
-    `;
+    
+    // Create message content with proper escaping
+    const senderElement = document.createElement('p');
+    senderElement.className = 'font-medium text-gray-800';
+    senderElement.textContent = sender;
+    
+    const contentElement = document.createElement('p');
+    contentElement.textContent = content;
+    
+    // Append elements to message div
+    messageDiv.appendChild(senderElement);
+    messageDiv.appendChild(contentElement);
+    
+    // Add message to container
     messagesContainer.appendChild(messageDiv);
     
     // Scroll to bottom
