@@ -1,0 +1,201 @@
+<div class="bg-white shadow-xl rounded-lg overflow-hidden h-full flex flex-col">
+  <div class="bg-blue-700 text-white p-4">
+    <h2 class="text-xl font-bold">Chat with Maxwell's Resume</h2>
+    <p class="text-blue-100 text-sm">Evaluate Maxwell's qualifications and fit for your open positions.</p>
+  </div>
+  
+  <div class="p-4 flex-grow flex flex-col overflow-hidden">
+    <div id="chat-messages" class="space-y-4 mb-4 flex-grow overflow-y-auto">
+      <div class="bg-blue-50 p-3 rounded-lg">
+        <p class="font-medium text-blue-800">AI Assistant</p>
+        <p>Hello! I'm Maxwell's AI assistant. I can help evaluate his fit for your open positions based on his experience in technical leadership, product strategy, and global team management. Ask me how his skills align with specific roles at your organization.</p>
+      </div>
+    </div>
+
+    <!-- Suggested Questions Carousel -->
+    <div class="mb-4 flex-shrink-0">
+      <p class="text-sm font-medium text-gray-700 mb-2">Suggested Questions:</p>
+      <div class="questions-carousel relative">
+        <div class="carousel-container overflow-hidden">
+          <div class="carousel-track flex transition-transform duration-300">
+            <button type="button" class="suggested-question min-w-full px-3 py-2 text-sm bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-md transition-colors text-left">Why would Maxwell be an excellent fit for a Development Manager role?</button>
+            <button type="button" class="suggested-question min-w-full px-3 py-2 text-sm bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-md transition-colors text-left">How do Maxwell's technical leadership skills translate to Engineering Director positions?</button>
+            <button type="button" class="suggested-question min-w-full px-3 py-2 text-sm bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-md transition-colors text-left">What experience does Maxwell have with managing global technical teams?</button>
+            <button type="button" class="suggested-question min-w-full px-3 py-2 text-sm bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-md transition-colors text-left">How would Maxwell's product strategy background benefit our organization?</button>
+          </div>
+        </div>
+        <div class="flex justify-between mt-2">
+          <button class="carousel-prev text-gray-500 hover:text-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <div class="carousel-indicators flex space-x-2">
+            <span class="carousel-dot h-2 w-2 rounded-full bg-blue-600"></span>
+            <span class="carousel-dot h-2 w-2 rounded-full bg-gray-300"></span>
+            <span class="carousel-dot h-2 w-2 rounded-full bg-gray-300"></span>
+            <span class="carousel-dot h-2 w-2 rounded-full bg-gray-300"></span>
+          </div>
+          <button class="carousel-next text-gray-500 hover:text-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="border-t pt-3 flex-shrink-0">
+      <form id="chat-form" class="flex items-end gap-2">
+        <div class="flex-grow">
+          <label for="question" class="block text-sm font-medium text-gray-700 mb-1">Your Question</label>
+          <textarea id="question" name="question" rows="2" class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md resize-none" placeholder="Ask how Maxwell would be a good fit for a specific role..."></textarea>
+        </div>
+        <button type="submit" class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          Send
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('chat-form');
+  const messagesContainer = document.getElementById('chat-messages');
+  const questionInput = document.getElementById('question');
+  const suggestedQuestions = document.querySelectorAll('.suggested-question');
+  
+  // Carousel functionality
+  const carouselTrack = document.querySelector('.carousel-track');
+  const carouselPrev = document.querySelector('.carousel-prev');
+  const carouselNext = document.querySelector('.carousel-next');
+  const carouselDots = document.querySelectorAll('.carousel-dot');
+  let currentSlide = 0;
+  const totalSlides = suggestedQuestions.length;
+  
+  // Initialize carousel
+  updateCarousel();
+  
+  // Add event listeners for carousel navigation
+  carouselPrev.addEventListener('click', function() {
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    updateCarousel();
+  });
+  
+  carouselNext.addEventListener('click', function() {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    updateCarousel();
+  });
+  
+  // Update carousel position and indicators
+  function updateCarousel() {
+    carouselTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+    
+    // Update indicators
+    carouselDots.forEach((dot, index) => {
+      if (index === currentSlide) {
+        dot.classList.remove('bg-gray-300');
+        dot.classList.add('bg-blue-600');
+      } else {
+        dot.classList.remove('bg-blue-600');
+        dot.classList.add('bg-gray-300');
+      }
+    });
+  }
+  
+  // Add click event for dots
+  carouselDots.forEach((dot, index) => {
+    dot.addEventListener('click', function() {
+      currentSlide = index;
+      updateCarousel();
+    });
+  });
+  
+  // Add event listeners to suggested questions
+  suggestedQuestions.forEach(button => {
+    button.addEventListener('click', function() {
+      const questionText = this.textContent.trim();
+      questionInput.value = questionText;
+      
+      // Automatically submit the form when clicking on a suggested question
+      if (questionText) {
+        // Trigger the form submission
+        const submitEvent = new Event('submit', { cancelable: true });
+        form.dispatchEvent(submitEvent);
+      }
+    });
+  });
+  
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const question = questionInput.value.trim();
+    if (!question) return;
+    
+    // Add user message to chat - this should stay visible throughout
+    addMessage('You', question, 'bg-gray-100');
+    
+    // Show loading indicator
+    const loadingId = addMessage('AI Assistant', 'Thinking...', 'bg-blue-50');
+    
+    // Send request to server
+    fetch('/chat/message', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({ question: question })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Replace only the loading message with response
+      removeMessage(loadingId);
+      addMessage('AI Assistant', data.response, 'bg-blue-50');
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      removeMessage(loadingId);
+      addMessage('AI Assistant', 'Sorry, I encountered an error processing your request.', 'bg-red-50');
+    });
+    
+    // Clear input
+    questionInput.value = '';
+  });
+  
+  function addMessage(sender, content, bgClass) {
+    const messageId = 'msg-' + Date.now();
+    const messageDiv = document.createElement('div');
+    messageDiv.id = messageId;
+    messageDiv.className = `${bgClass} p-3 rounded-lg`;
+    
+    // Create message content with proper escaping
+    const senderElement = document.createElement('p');
+    senderElement.className = 'font-medium text-gray-800';
+    senderElement.textContent = sender;
+    
+    const contentElement = document.createElement('p');
+    contentElement.textContent = content;
+    
+    // Append elements to message div
+    messageDiv.appendChild(senderElement);
+    messageDiv.appendChild(contentElement);
+    
+    // Add message to container
+    messagesContainer.appendChild(messageDiv);
+    
+    // Scroll to bottom
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    
+    return messageId;
+  }
+  
+  function removeMessage(messageId) {
+    const message = document.getElementById(messageId);
+    if (message) {
+      message.remove();
+    }
+  }
+});
+</script> 

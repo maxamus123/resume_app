@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
+  # Chat feature routes
+  get 'chat', to: 'chat#index'
+  post 'chat/message', to: 'chat#message'
+  
   # Set home page as the root
   root 'home#index'
+  
+  # Interactive side-by-side view
+  get 'interactive', to: 'home#interactive'
   
   # Individual section pages
   resources :experiences, only: [:index]
