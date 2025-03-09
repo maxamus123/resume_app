@@ -3,11 +3,11 @@ Rails.application.routes.draw do
   get 'chat', to: 'chat#index'
   post 'chat/message', to: 'chat#message'
   
-  # Set home page as the root
-  root 'home#index'
+  # Set interactive view as the root
+  root 'home#interactive'
   
-  # Interactive side-by-side view
-  get 'interactive', to: 'home#interactive'
+  # Original resume view
+  get 'resume', to: 'home#index'
   
   # Individual section pages
   resources :experiences, only: [:index]
