@@ -44,6 +44,22 @@
         const chatPanel = document.getElementById('chat-panel');
         let isChatOpen = false;
         
+        // Function to handle responsive layout
+        function handleResponsiveLayout() {
+          if (window.innerWidth >= 1024) { // lg breakpoint in Tailwind
+            // On desktop: Always show chat panel
+            chatPanel.classList.remove('translate-y-full');
+          } else {
+            // On mobile: Hide by default unless explicitly opened
+            if (!isChatOpen) {
+              chatPanel.classList.add('translate-y-full');
+            }
+          }
+        }
+        
+        // Run immediately to set correct initial state
+        handleResponsiveLayout();
+        
         // Only add toggle functionality on mobile
         if (chatToggle) {
           chatToggle.addEventListener('click', function() {
@@ -56,14 +72,8 @@
           });
         }
         
-        // Listen for window resize and reset chat panel position on desktop
-        window.addEventListener('resize', function() {
-          if (window.innerWidth >= 1024) { // lg breakpoint in Tailwind
-            chatPanel.classList.remove('translate-y-full');
-          } else if (!isChatOpen) {
-            chatPanel.classList.add('translate-y-full');
-          }
-        });
+        // Listen for window resize and adjust layout accordingly
+        window.addEventListener('resize', handleResponsiveLayout);
       });
     </script>
   </body>
