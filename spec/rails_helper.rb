@@ -9,6 +9,7 @@ require 'rspec/rails'
 require 'factory_bot_rails'
 require 'shoulda/matchers'
 require 'database_cleaner/active_record'
+require 'rails-controller-testing'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -70,6 +71,13 @@ RSpec.configure do |config|
   
   # Include FactoryBot syntax methods
   config.include FactoryBot::Syntax::Methods
+  
+  # Add rails-controller-testing configuration
+  [:controller, :view, :request].each do |type|
+    config.include ::Rails::Controller::Testing::TestProcess, type: type
+    config.include ::Rails::Controller::Testing::TemplateAssertions, type: type
+    config.include ::Rails::Controller::Testing::Integration, type: type
+  end
   
   # Configure DatabaseCleaner
   config.before(:suite) do
