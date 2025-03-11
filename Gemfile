@@ -1,18 +1,18 @@
 source "https://rubygems.org"
 
-ruby "3.1.3"
+ruby "3.3.0"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.1.5", ">= 7.1.5.1"
+gem "rails", "~> 8.0.1"
 
-# The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
-gem "sprockets-rails"
+# Use Propshaft for the asset pipeline [https://github.com/rails/propshaft]
+gem "propshaft"
 
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem "puma", ">= 5.0"
+gem "puma", ">= 6.0"
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
@@ -35,14 +35,11 @@ gem "faraday"
 # JSON Web Token for secure API authentication
 gem "jwt"
 
-# Use Redis adapter to run Action Cable in production
-# gem "redis", ">= 4.0.1"
+# Database-backed ActiveJob backend for Rails 8 [https://github.com/rails/solid_queue]
+gem "solid_queue"
 
-# Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
-# gem "kredis"
-
-# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
+# Database-backed Cache for Rails 8 [https://github.com/rails/solid_cache]
+gem "solid_cache"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
@@ -58,7 +55,7 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
   
   # RSpec for testing
-  gem "rspec-rails", "~> 6.0"
+  gem "rspec-rails"
   
   # FactoryBot for test fixtures
   gem "factory_bot_rails"
@@ -91,6 +88,5 @@ group :test do
   # Database cleaner for testing
   gem "database_cleaner-active_record"
 end
-
 
 gem "rails-controller-testing", "~> 1.0"
