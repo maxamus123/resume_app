@@ -14,7 +14,7 @@ class OpenaiService
     }
     
     payload = {
-      model: "gpt-3.5-turbo",
+      model: "gpt-4-turbo",
       messages: messages,
       max_tokens: max_tokens
     }
