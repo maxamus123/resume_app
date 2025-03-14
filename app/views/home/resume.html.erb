@@ -1,0 +1,82 @@
+<% if @profile %>
+  <!-- Header with Name and Title -->
+  <h1><%= @profile.name %></h1>
+  <div class="contact-info">
+    <%= @profile.email %>
+    <% if @profile.phone.present? %> | <%= @profile.phone %><% end %>
+    <% if @profile.respond_to?(:location) && @profile.location.present? %> | <%= @profile.location %><% end %>
+  </div>
+
+  <!-- Profile Summary -->
+  <div class="section">
+    <h2>Profile</h2>
+    <div>
+      <%= simple_format(@profile.summary) %>
+    </div>
+  </div>
+
+  <!-- Work Experience -->
+  <div class="section">
+    <h2>Work Experience</h2>
+    
+    <% @experiences.each do |experience| %>
+      <div class="experience">
+        <div>
+          <span class="position"><%= experience.position %></span> - 
+          <span class="company"><%= experience.company %></span>
+          <div class="date">
+            <%= experience.start_date.strftime("%m/%Y") %> - 
+            <%= experience.respond_to?(:current) && experience.current ? "Present" : experience.end_date.strftime("%m/%Y") %>
+          </div>
+        </div>
+        <div>
+          <%= simple_format(experience.description) if experience.description.present? %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Education -->
+  <div class="section">
+    <h2>Education</h2>
+    
+    <% @educations.each do |education| %>
+      <div class="education">
+        <div>
+          <span class="position"><%= education.degree %></span> - 
+          <span class="company"><%= education.institution %></span>
+          <div class="date">
+            <%= education.start_date.strftime("%m/%Y") %> - 
+            <%= education.respond_to?(:current) && education.current ? "Present" : education.end_date.strftime("%m/%Y") %>
+          </div>
+        </div>
+        <div>
+          <%= simple_format(education.description) if education.description.present? %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Skills -->
+  <div class="section">
+    <h2>Skills</h2>
+    
+    <% @skills.each do |category, skills| %>
+      <div class="skill-category"><%= category %></div>
+      <div class="skill-list">
+        <%= skills.map(&:name).join(", ") %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Languages -->
+  <% if @languages.any? %>
+    <div class="section">
+      <h2>Languages</h2>
+      
+      <% @languages.each do |language| %>
+        <div><strong><%= language.name %></strong>: <%= language.proficiency %></div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %> 
