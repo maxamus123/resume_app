@@ -19,7 +19,7 @@ Language.destroy_all
 Profile.create!(
   name: "Maxwell Creamer",
   title: "Product Manager / Tech Leader",
-  summary: "In my current role, I embrace three pivotal positions that highlight my expertise in technical leadership, product strategy, and global team management: Senior Engineer, Product Manager, and Global Tech Liaison. These roles reflect my dedication to transforming technology through innovative solutions and scalable, impactful content delivery. I specialize in integrating cutting-edge AI technologies, including GPT-4-Turbo, to create intelligent, responsive applications that enhance user experience and business outcomes.",
+  summary: "In my current role, I embrace three pivotal positions that highlight my expertise in technical leadership, product strategy, and global team management: Senior Engineer, Product Manager, and Global Tech Liaison. These roles reflect my dedication to transforming technology through innovative solutions and scalable, impactful content delivery. I specialize in integrating cutting-edge AI technologies, particularly large language models into web applications, to create intelligent, responsive applications that enhance user experience and business outcomes.",
   email: "Max.Creamer93@gmail.com",
   phone: "",
   linkedin: "",
@@ -51,7 +51,7 @@ experiences = [
     start_date: Date.new(2023, 5, 1),
     end_date: nil,
     current: true,
-    description: "I spearheaded the development of a sophisticated multi-agent application leveraging GPT-4-Turbo and multistep prompt chains to deliver dynamic and interactive content. My responsibilities included architecting robust systems, prompt engineering, and optimizing model efficiency and accuracy while ensuring cost-effective API usage."
+    description: "I spearheaded the development of a sophisticated multi-agent application leveraging advanced large language models and multistep prompt chains to deliver dynamic and interactive content. My responsibilities included architecting robust systems, prompt engineering, and optimizing model efficiency and accuracy while ensuring cost-effective API usage."
   }
 ]
 

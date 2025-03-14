@@ -14,7 +14,7 @@
     <div class="p-4 sm:p-6 overflow-y-auto max-h-[calc(100vh-12rem)]">
       <!-- Profile Summary -->
       <section class="mb-6 sm:mb-8">
-        <h2 class="text-lg sm:text-xl font-bold text-gray-800 border-b-2 border-blue-200 pb-2 mb-3 sm:mb-4">Profile</h2>
+        <%= section_heading("Profile") %>
         <div class="text-sm sm:text-base text-gray-700 leading-relaxed">
           <%= simple_format(@profile.summary) %>
         </div>
@@ -22,54 +22,14 @@
 
       <!-- Work Experience -->
       <section class="mb-6 sm:mb-8">
-        <h2 class="text-lg sm:text-xl font-bold text-gray-800 border-b-2 border-blue-200 pb-2 mb-3 sm:mb-4">Work Experience</h2>
-        
-        <% @experiences.each do |experience| %>
-          <div class="mb-4 sm:mb-5">
-            <div class="flex flex-col md:flex-row md:justify-between md:items-start">
-              <div>
-                <h3 class="text-base sm:text-lg font-semibold text-gray-800"><%= experience.position %></h3>
-                <p class="text-blue-600 font-medium text-sm sm:text-base"><%= experience.company %></p>
-              </div>
-              <div class="text-gray-600 text-sm mt-1 md:mt-0 md:text-right">
-                <%= experience.start_date.strftime("%m/%Y") %> - 
-                <%= experience.current ? "Present" : experience.end_date.strftime("%m/%Y") %>
-              </div>
-            </div>
-            <div class="mt-2 text-sm sm:text-base text-gray-700">
-              <%= simple_format(experience.description) %>
-            </div>
-          </div>
-        <% end %>
+        <%= section_heading("Work Experience") %>
+        <%= render_experiences(@experiences) %>
       </section>
 
       <!-- Education -->
       <section class="mb-6 sm:mb-8">
-        <h2 class="text-lg sm:text-xl font-bold text-gray-800 border-b-2 border-blue-200 pb-2 mb-3 sm:mb-4">Education</h2>
-        
-        <% @educations.each do |education| %>
-          <div class="mb-4 sm:mb-5">
-            <div class="flex flex-col md:flex-row md:justify-between md:items-start">
-              <div>
-                <h3 class="text-base sm:text-lg font-semibold text-gray-800"><%= education.degree %> in <%= education.field %></h3>
-                <p class="text-blue-600 font-medium text-sm sm:text-base"><%= education.institution %></p>
-              </div>
-              <% if education.start_date.present? && education.end_date.present? %>
-                <div class="text-gray-600 text-sm mt-1 md:mt-0 md:text-right">
-                  <%= education.start_date.strftime("%Y") %> - <%= education.end_date.strftime("%Y") %>
-                </div>
-              <% end %>
-            </div>
-            <% if education.gpa.present? %>
-              <p class="text-gray-700 text-sm mt-1">GPA: <%= education.gpa %></p>
-            <% end %>
-            <% if education.description.present? %>
-              <div class="mt-2 text-sm sm:text-base text-gray-700">
-                <%= simple_format(education.description) %>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
+        <%= section_heading("Education") %>
+        <%= render_educations(@educations) %>
       </section>
 
       <!-- Skills -->
@@ -79,14 +39,11 @@
 
       <!-- Languages -->
       <section>
-        <h2 class="text-lg sm:text-xl font-bold text-gray-800 border-b-2 border-blue-200 pb-2 mb-3 sm:mb-4">Languages</h2>
+        <%= section_heading("Languages") %>
         
         <div class="flex flex-wrap gap-2 sm:gap-3">
           <% @languages.each do |language| %>
-            <div class="bg-gray-100 rounded-lg px-2 sm:px-3 py-1">
-              <span class="font-medium text-xs sm:text-sm"><%= language.name %></span>
-              <span class="text-gray-600 ml-1 sm:ml-2 text-xs sm:text-sm"><%= language.proficiency %></span>
-            </div>
+            <%= badge_tag(language.display_html) %>
           <% end %>
         </div>
       </section>
