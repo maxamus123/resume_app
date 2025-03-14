@@ -1,11 +1,11 @@
-<div class="bg-white shadow-xl rounded-lg overflow-hidden h-full flex flex-col">
+<div class="bg-white shadow-xl rounded-lg overflow-hidden h-full flex flex-col" data-controller="chat">
   <div class="bg-blue-700 text-white p-3 sm:p-4 flex justify-between items-center">
     <div>
       <h2 class="text-lg sm:text-xl font-bold">Chat with Maxwell's Resume</h2>
       <p class="text-blue-100 text-xs sm:text-sm">Evaluate Maxwell's qualifications and fit for your open positions.</p>
     </div>
     <!-- Mobile Close Button -->
-    <button id="chat-close" class="lg:hidden text-white">
+    <button id="chat-close" class="lg:hidden text-white" data-layout-target="chatClose" data-action="click->layout#closeChat">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
       </svg>
@@ -13,7 +13,7 @@
   </div>
   
   <div class="p-3 sm:p-4 flex-grow flex flex-col overflow-hidden">
-    <div id="chat-messages" class="space-y-3 mb-3 sm:mb-4 flex-grow overflow-y-auto">
+    <div id="chat-messages" class="space-y-3 mb-3 sm:mb-4 flex-grow overflow-y-auto" data-chat-target="messages">
       <div class="bg-blue-50 p-2 sm:p-3 rounded-lg">
         <p class="font-medium text-blue-800 text-sm sm:text-base">AI Assistant</p>
         <p class="text-sm sm:text-base">Hello! I'm Maxwell's AI assistant. I can help evaluate his fit for your open positions based on his experience in technical leadership, product strategy, and global team management. Ask me how his skills align with specific roles at your organization.</p>
@@ -25,26 +25,26 @@
       <p class="text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Suggested Questions:</p>
       <div class="questions-carousel relative">
         <div class="carousel-container overflow-hidden">
-          <div class="carousel-track flex transition-transform duration-300">
-            <button type="button" class="suggested-question min-w-full px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-md transition-colors text-left">Why would Maxwell be an excellent fit for a Development Manager role?</button>
-            <button type="button" class="suggested-question min-w-full px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-md transition-colors text-left">How do Maxwell's technical leadership skills translate to Engineering Director positions?</button>
-            <button type="button" class="suggested-question min-w-full px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-md transition-colors text-left">What experience does Maxwell have with managing global technical teams?</button>
-            <button type="button" class="suggested-question min-w-full px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-md transition-colors text-left">How would Maxwell's product strategy background benefit our organization?</button>
+          <div class="carousel-track flex transition-transform duration-300" data-chat-target="carouselTrack">
+            <button type="button" class="suggested-question min-w-full px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-md transition-colors text-left" data-chat-target="suggestedQuestion" data-action="click->chat#selectQuestion">Why would Maxwell be an excellent fit for a Development Manager role?</button>
+            <button type="button" class="suggested-question min-w-full px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-md transition-colors text-left" data-chat-target="suggestedQuestion" data-action="click->chat#selectQuestion">How do Maxwell's technical leadership skills translate to Engineering Director positions?</button>
+            <button type="button" class="suggested-question min-w-full px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-md transition-colors text-left" data-chat-target="suggestedQuestion" data-action="click->chat#selectQuestion">What experience does Maxwell have with managing global technical teams?</button>
+            <button type="button" class="suggested-question min-w-full px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-md transition-colors text-left" data-chat-target="suggestedQuestion" data-action="click->chat#selectQuestion">How would Maxwell's product strategy background benefit our organization?</button>
           </div>
         </div>
         <div class="flex justify-between mt-1 sm:mt-2">
-          <button class="carousel-prev text-gray-500 hover:text-gray-700">
+          <button class="carousel-prev text-gray-500 hover:text-gray-700" data-chat-target="carouselPrev" data-action="click->chat#prevSlide">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           <div class="carousel-indicators flex space-x-2">
-            <span class="carousel-dot h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-blue-600"></span>
-            <span class="carousel-dot h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-gray-300"></span>
-            <span class="carousel-dot h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-gray-300"></span>
-            <span class="carousel-dot h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-gray-300"></span>
+            <span class="carousel-dot h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-blue-600" data-chat-target="carouselDot" data-action="click->chat#goToSlide"></span>
+            <span class="carousel-dot h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-gray-300" data-chat-target="carouselDot" data-action="click->chat#goToSlide"></span>
+            <span class="carousel-dot h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-gray-300" data-chat-target="carouselDot" data-action="click->chat#goToSlide"></span>
+            <span class="carousel-dot h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-gray-300" data-chat-target="carouselDot" data-action="click->chat#goToSlide"></span>
           </div>
-          <button class="carousel-next text-gray-500 hover:text-gray-700">
+          <button class="carousel-next text-gray-500 hover:text-gray-700" data-chat-target="carouselNext" data-action="click->chat#nextSlide">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
@@ -54,10 +54,10 @@
     </div>
     
     <div class="border-t pt-3 flex-shrink-0">
-      <form id="chat-form" class="flex items-end gap-2">
+      <form id="chat-form" class="flex items-end gap-2" data-chat-target="form" data-action="submit->chat#submit">
         <div class="flex-grow">
           <label for="question" class="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Your Question</label>
-          <textarea id="question" name="question" rows="2" class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full text-sm border-gray-300 rounded-md resize-none" placeholder="Ask how Maxwell would fit a specific role..."></textarea>
+          <textarea id="question" name="question" rows="2" class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full text-sm border-gray-300 rounded-md resize-none" placeholder="Ask how Maxwell would fit a specific role..." data-chat-target="question"></textarea>
         </div>
         <button type="submit" class="inline-flex items-center px-2 py-2 sm:px-3 sm:py-2 border border-transparent text-xs sm:text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
           Send
@@ -65,167 +65,4 @@
       </form>
     </div>
   </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const form = document.getElementById('chat-form');
-  const messagesContainer = document.getElementById('chat-messages');
-  const questionInput = document.getElementById('question');
-  const suggestedQuestions = document.querySelectorAll('.suggested-question');
-  const chatCloseButton = document.getElementById('chat-close');
-  const chatPanel = document.getElementById('chat-panel');
-  
-  // Close chat panel on mobile when close button is clicked
-  if (chatCloseButton && chatPanel) {
-    chatCloseButton.addEventListener('click', function() {
-      chatPanel.classList.add('translate-y-full');
-    });
-  }
-  
-  // Carousel functionality
-  const carouselTrack = document.querySelector('.carousel-track');
-  const carouselPrev = document.querySelector('.carousel-prev');
-  const carouselNext = document.querySelector('.carousel-next');
-  const carouselDots = document.querySelectorAll('.carousel-dot');
-  let currentSlide = 0;
-  const totalSlides = suggestedQuestions.length;
-  
-  // Initialize carousel
-  updateCarousel();
-  
-  // Add event listeners for carousel navigation
-  carouselPrev.addEventListener('click', function() {
-    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-    updateCarousel();
-  });
-  
-  carouselNext.addEventListener('click', function() {
-    currentSlide = (currentSlide + 1) % totalSlides;
-    updateCarousel();
-  });
-  
-  // Update carousel position and indicators
-  function updateCarousel() {
-    carouselTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
-    
-    // Update indicators
-    carouselDots.forEach((dot, index) => {
-      if (index === currentSlide) {
-        dot.classList.remove('bg-gray-300');
-        dot.classList.add('bg-blue-600');
-      } else {
-        dot.classList.remove('bg-blue-600');
-        dot.classList.add('bg-gray-300');
-      }
-    });
-  }
-  
-  // Add click event for dots
-  carouselDots.forEach((dot, index) => {
-    dot.addEventListener('click', function() {
-      currentSlide = index;
-      updateCarousel();
-    });
-  });
-  
-  // Add event listeners to suggested questions
-  suggestedQuestions.forEach(button => {
-    button.addEventListener('click', function() {
-      const questionText = this.textContent.trim();
-      questionInput.value = questionText;
-      
-      // Automatically submit the form when clicking on a suggested question
-      if (questionText) {
-        // Trigger the form submission
-        const submitEvent = new Event('submit', { cancelable: true });
-        form.dispatchEvent(submitEvent);
-      }
-    });
-  });
-  
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const question = questionInput.value.trim();
-    if (!question) return;
-    
-    // Add user message to chat
-    addMessage('You', question, 'bg-gray-100');
-    
-    // Create a new message bubble for the AI response
-    const loadingId = addMessage('AI Assistant', '', 'bg-blue-50');
-    
-    // Get the current message element for streaming updates
-    const loadingElement = document.getElementById(loadingId).querySelector('p:nth-child(2)');
-    
-    // Use Server-Sent Events for streaming
-    const eventSource = new EventSource(`/chat/stream_message?question=${encodeURIComponent(question)}`);
-    
-    let responseText = '';
-    
-    eventSource.addEventListener('start', function(e) {
-      // Initialize the streaming message
-      loadingElement.textContent = '';
-    });
-    
-    eventSource.addEventListener('message', function(e) {
-      // Append the chunk to our accumulated response
-      responseText += JSON.parse(e.data);
-      loadingElement.textContent = responseText;
-      
-      // Scroll to see new content
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    });
-    
-    eventSource.addEventListener('error', function(e) {
-      console.error('SSE Error:', e);
-      loadingElement.textContent = 'Sorry, I encountered an error processing your request.';
-      eventSource.close();
-    });
-    
-    eventSource.addEventListener('done', function(e) {
-      // Complete the streaming response
-      eventSource.close();
-    });
-    
-    // Clear input
-    questionInput.value = '';
-  });
-  
-  function addMessage(sender, content, bgClass) {
-    const messageId = 'msg-' + Date.now();
-    const messageDiv = document.createElement('div');
-    messageDiv.id = messageId;
-    messageDiv.className = `${bgClass} p-2 sm:p-3 rounded-lg`;
-    
-    // Create message content with proper escaping
-    const senderElement = document.createElement('p');
-    senderElement.className = 'font-medium text-gray-800 text-sm sm:text-base';
-    senderElement.textContent = sender;
-    
-    const contentElement = document.createElement('p');
-    contentElement.className = 'text-sm sm:text-base';
-    contentElement.textContent = content;
-    
-    // Append elements to message div
-    messageDiv.appendChild(senderElement);
-    messageDiv.appendChild(contentElement);
-    
-    // Add message to container
-    messagesContainer.appendChild(messageDiv);
-    
-    // Scroll to bottom
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    
-    return messageId;
-  }
-  
-  function removeMessage(messageId) {
-    const message = document.getElementById(messageId);
-    if (message) {
-      message.remove();
-    }
-  }
-});
-</script> 
+</div> 
