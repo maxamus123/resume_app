@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static targets = [
@@ -7,222 +7,172 @@ export default class extends Controller {
     "form",
     "carouselTrack",
     "carouselDot",
-    "carouselPrev",
-    "carouselNext",
     "suggestedQuestion"
-  ]
+  ];
+
+  initialize() {
+    // Bind once for proper cleanup
+    this.boundHandleKeydown = this.handleKeydown.bind(this);
+  }
 
   connect() {
-    this.currentSlide = 0
-    this.totalSlides = this.suggestedQuestionTargets.length
-    this.updateCarousel()
-    this.currentEventSource = null
-    
-    // Add keydown event listener to the question textarea
-    this.questionTarget.addEventListener('keydown', this.handleKeydown.bind(this))
+    this.currentSlide = 0;
+    this.totalSlides = this.suggestedQuestionTargets.length;
+    this.updateCarousel();
+    this.currentEventSource = null;
+    this.questionTarget.addEventListener("keydown", this.boundHandleKeydown);
   }
 
   disconnect() {
-    this.closeCurrentEventSource()
-    
-    // Remove keydown event listener when controller disconnects
-    this.questionTarget.removeEventListener('keydown', this.handleKeydown.bind(this))
+    this.closeCurrentEventSource();
+    this.questionTarget.removeEventListener("keydown", this.boundHandleKeydown);
   }
 
-  // Handle keydown events on the question textarea
+  // --- Event Handlers ---
+
   handleKeydown(event) {
-    // Submit the form when Enter key is pressed without Shift key
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault() // Prevent the default action (new line)
-      this.formTarget.dispatchEvent(new Event('submit', { cancelable: true }))
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      this.formTarget.dispatchEvent(new Event("submit", { cancelable: true }));
     }
   }
 
-  // Helper to close any active EventSource connection
   closeCurrentEventSource() {
     if (this.currentEventSource) {
-      console.log('Closing existing event source connection')
       try {
-        this.currentEventSource.close()
+        this.currentEventSource.close();
       } catch (e) {
-        console.error('Error closing event source:', e)
+        console.error(e);
       }
-      this.currentEventSource = null
+      this.currentEventSource = null;
     }
   }
 
   submit(event) {
-    event.preventDefault()
-    this.closeCurrentEventSource()
+    event.preventDefault();
+    this.closeCurrentEventSource();
 
-    const question = this.questionTarget.value.trim()
-    if (!question) return
+    const question = this.questionTarget.value.trim();
+    if (!question) return;
 
-    // Add user message and a loading placeholder for the AI response
-    this.addMessage('You', question, 'bg-gray-100')
-    const loadingId = this.addMessage('AI Assistant', 'Thinking...', 'bg-blue-50')
-    
-    // Clear the input field right after submitting
-    this.questionTarget.value = ''
-    
-    // Improved element selection with more specific logging
-    const loadingElement = document.getElementById(loadingId)?.querySelector('p[data-sender="AI Assistant"]')
-    if (!loadingElement) {
-      console.error(`Could not find loading element with id ${loadingId}`)
-    }
+    this.addMessage("You", question, "bg-gray-100");
+    const loadingId = this.addMessage("AI Assistant", "Thinking...", "bg-blue-50");
+    this.questionTarget.value = "";
 
-    const eventSource = new EventSource(`/chat/stream_message?question=${encodeURIComponent(question)}`)
-    this.currentEventSource = eventSource
-    let responseText = ''
+    // Helper to get the AI message element
+    const getMsgElem = () =>
+        document.getElementById(loadingId)?.querySelector('p[data-sender="AI Assistant"]');
 
-    eventSource.addEventListener('start', () => {
-      if (loadingElement) {
-        loadingElement.textContent = ''
-        responseText = ''
-        console.log('Start event received, cleared response text')
-      } else {
-        console.error('Start event received but loading element not found')
+    const eventSource = new EventSource(
+        `/chat/stream_message?question=${encodeURIComponent(question)}`
+    );
+    this.currentEventSource = eventSource;
+    let responseText = "";
+
+    eventSource.addEventListener("start", () => {
+      const elem = getMsgElem();
+      if (elem) {
+        elem.textContent = "";
+        responseText = "";
       }
-    })
+    });
 
-    eventSource.addEventListener('message', (e) => {
+    eventSource.addEventListener("message", (e) => {
       try {
-        console.log('Message event received:', e.data)
-        const chunk = JSON.parse(e.data)
-        responseText += chunk
-        
-        // Re-query the element each time to ensure we have the current reference
-        const messageElement = document.getElementById(loadingId)?.querySelector('p[data-sender="AI Assistant"]')
-        if (messageElement) {
-          messageElement.textContent = responseText
-          this.messagesTarget.scrollTop = this.messagesTarget.scrollHeight
-        } else {
-          console.error(`Message element with id ${loadingId} not found during message event`)
+        const chunk = JSON.parse(e.data);
+        responseText += chunk;
+        const elem = getMsgElem();
+        if (elem) {
+          elem.textContent = responseText;
+          this.messagesTarget.scrollTop = this.messagesTarget.scrollHeight;
         }
-      } catch (error) {
-        console.error('Error parsing stream data:', error, 'Raw data:', e.data)
-        
-        // Re-query the element
-        const messageElement = document.getElementById(loadingId)?.querySelector('p[data-sender="AI Assistant"]')
-        if (messageElement) {
-          if (messageElement.textContent === 'Thinking...') {
-            messageElement.textContent = 'Sorry, an error occurred processing the response.'
-          }
-        } else {
-          console.error(`Message element with id ${loadingId} not found during error handling`)
+      } catch (err) {
+        const elem = getMsgElem();
+        if (elem && elem.textContent === "Thinking...") {
+          elem.textContent = "Sorry, an error occurred processing the response.";
         }
       }
-    })
+    });
 
-    eventSource.addEventListener('error', (e) => {
-      console.error('SSE Error:', e)
-      // Re-query the element
-      const messageElement = document.getElementById(loadingId)?.querySelector('p[data-sender="AI Assistant"]')
-      if (messageElement && messageElement.textContent === 'Thinking...') {
-        messageElement.textContent = 'Sorry, an error occurred processing your request.'
+    eventSource.addEventListener("error", () => {
+      const elem = getMsgElem();
+      if (elem && elem.textContent === "Thinking...") {
+        elem.textContent = "Sorry, an error occurred processing your request.";
       }
-      eventSource.close()
-      if (this.currentEventSource === eventSource) {
-        this.currentEventSource = null
-      }
-    })
+      eventSource.close();
+      if (this.currentEventSource === eventSource) this.currentEventSource = null;
+    });
 
-    eventSource.addEventListener('end', () => {
-      console.log('End event received')
-      eventSource.close()
-      if (this.currentEventSource === eventSource) {
-        this.currentEventSource = null
+    eventSource.addEventListener("end", () => {
+      eventSource.close();
+      if (this.currentEventSource === eventSource) this.currentEventSource = null;
+      const elem = getMsgElem();
+      if (elem && (!responseText.trim() || elem.textContent === "Thinking...")) {
+        elem.textContent = "No response received. Please try again.";
       }
-      
-      // Re-query the element
-      const messageElement = document.getElementById(loadingId)?.querySelector('p[data-sender="AI Assistant"]')
-      if (messageElement) {
-        if (!responseText.trim() || messageElement.textContent === 'Thinking...') {
-          messageElement.textContent = 'No response received. Please try again.'
-        }
-        // Log the response for debugging
-        console.log('Final response text:', responseText || 'empty response')
-      } else {
-        console.error(`Message element with id ${loadingId} not found during end event`)
-      }
-    })
+    });
   }
 
   selectQuestion(event) {
-    this.closeCurrentEventSource()
-    const questionText = event.currentTarget.textContent.trim()
-    this.questionTarget.value = questionText
-
-    // Automatically submit if there is a suggested question
-    if (questionText) {
-      this.formTarget.dispatchEvent(new Event('submit', { cancelable: true }))
-    }
+    this.closeCurrentEventSource();
+    const text = event.currentTarget.textContent.trim();
+    this.questionTarget.value = text;
+    if (text) this.formTarget.dispatchEvent(new Event("submit", { cancelable: true }));
   }
 
-  // Carousel navigation methods
+  // --- Carousel Functions ---
+
   prevSlide() {
-    this.currentSlide = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides
-    this.updateCarousel()
+    this.currentSlide = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+    this.updateCarousel();
   }
 
   nextSlide() {
-    this.currentSlide = (this.currentSlide + 1) % this.totalSlides
-    this.updateCarousel()
+    this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
+    this.updateCarousel();
   }
 
   goToSlide(event) {
-    const index = this.carouselDotTargets.indexOf(event.currentTarget)
+    const index = this.carouselDotTargets.indexOf(event.currentTarget);
     if (index !== -1) {
-      this.currentSlide = index
-      this.updateCarousel()
+      this.currentSlide = index;
+      this.updateCarousel();
     }
   }
 
   updateCarousel() {
-    this.carouselTrackTarget.style.transform = `translateX(-${this.currentSlide * 100}%)`
-    this.carouselDotTargets.forEach((dot, index) => {
-      dot.classList.toggle('bg-blue-600', index === this.currentSlide)
-      dot.classList.toggle('bg-gray-300', index !== this.currentSlide)
-    })
+    this.carouselTrackTarget.style.transform = `translateX(-${this.currentSlide * 100}%)`;
+    this.carouselDotTargets.forEach((dot, i) => {
+      dot.classList.toggle("bg-blue-600", i === this.currentSlide);
+      dot.classList.toggle("bg-gray-300", i !== this.currentSlide);
+    });
   }
 
-  // Adds a message to the chat container and scrolls to the bottom
+  // --- Message Management ---
+
   addMessage(sender, content, bgClass) {
-    // Generate a unique ID for this message
-    const messageId = `msg-${Date.now()}-${Math.floor(Math.random() * 1000)}`
-    console.log(`Creating new message with ID: ${messageId}`)
-    
-    const messageDiv = document.createElement('div')
-    messageDiv.id = messageId
-    messageDiv.className = `${bgClass} p-3 sm:p-4 rounded-lg`
+    const id = `msg-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    const msgDiv = document.createElement("div");
+    msgDiv.id = id;
+    msgDiv.className = `${bgClass} p-3 sm:p-4 rounded-lg`;
 
-    const senderElement = document.createElement('p')
-    senderElement.className = 'font-medium text-gray-800 text-sm sm:text-base'
-    senderElement.textContent = sender
+    const senderElem = document.createElement("p");
+    senderElem.className = "font-medium text-gray-800 text-sm sm:text-base";
+    senderElem.textContent = sender;
 
-    const contentElement = document.createElement('p')
-    contentElement.className = 'text-sm sm:text-base message-content'
-    contentElement.dataset.sender = sender
-    contentElement.textContent = content
+    const contentElem = document.createElement("p");
+    contentElem.className = "text-sm sm:text-base message-content";
+    contentElem.dataset.sender = sender;
+    contentElem.textContent = content;
 
-    messageDiv.appendChild(senderElement)
-    messageDiv.appendChild(contentElement)
-    this.messagesTarget.appendChild(messageDiv)
-    this.messagesTarget.scrollTop = this.messagesTarget.scrollHeight
-    
-    // Verify the element was created successfully
-    const addedElement = document.getElementById(messageId)
-    if (!addedElement) {
-      console.error(`Failed to add message with ID: ${messageId}`)
-    }
-
-    return messageId
+    msgDiv.append(senderElem, contentElem);
+    this.messagesTarget.appendChild(msgDiv);
+    this.messagesTarget.scrollTop = this.messagesTarget.scrollHeight;
+    return id;
   }
 
-  removeMessage(messageId) {
-    const message = document.getElementById(messageId)
-    if (message) {
-      message.remove()
-    }
+  removeMessage(id) {
+    const msg = document.getElementById(id);
+    if (msg) msg.remove();
   }
 }
