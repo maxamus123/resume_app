@@ -17,10 +17,25 @@ export default class extends Controller {
     this.totalSlides = this.suggestedQuestionTargets.length
     this.updateCarousel()
     this.currentEventSource = null
+    
+    // Add keydown event listener to the question textarea
+    this.questionTarget.addEventListener('keydown', this.handleKeydown.bind(this))
   }
 
   disconnect() {
     this.closeCurrentEventSource()
+    
+    // Remove keydown event listener when controller disconnects
+    this.questionTarget.removeEventListener('keydown', this.handleKeydown.bind(this))
+  }
+
+  // Handle keydown events on the question textarea
+  handleKeydown(event) {
+    // Submit the form when Enter key is pressed without Shift key
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault() // Prevent the default action (new line)
+      this.formTarget.dispatchEvent(new Event('submit', { cancelable: true }))
+    }
   }
 
   // Helper to close any active EventSource connection
@@ -46,6 +61,9 @@ export default class extends Controller {
     // Add user message and a loading placeholder for the AI response
     this.addMessage('You', question, 'bg-gray-100')
     const loadingId = this.addMessage('AI Assistant', 'Thinking...', 'bg-blue-50')
+    
+    // Clear the input field right after submitting
+    this.questionTarget.value = ''
     
     // Improved element selection with more specific logging
     const loadingElement = document.getElementById(loadingId)?.querySelector('p[data-sender="AI Assistant"]')
@@ -115,7 +133,6 @@ export default class extends Controller {
       if (this.currentEventSource === eventSource) {
         this.currentEventSource = null
       }
-      this.questionTarget.value = ''
       
       // Re-query the element
       const messageElement = document.getElementById(loadingId)?.querySelector('p[data-sender="AI Assistant"]')
