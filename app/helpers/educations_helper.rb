@@ -9,13 +9,13 @@ module EducationsHelper
         # Degree and institution
         degree_div = content_tag(:div) do
           title = content_tag(:h3, education.degree_with_field, class: "text-base sm:text-lg font-semibold text-gray-800")
-          institution = content_tag(:p, education.institution, class: "text-blue-600 font-medium text-sm sm:text-base")
+          institution = content_tag(:p, education.institution, class: "text-teal-600 font-medium text-sm sm:text-base")
           title + institution
         end
         
         # Date range
         date_div = if education.has_dates?
-                     content_tag(:div, education.year_range, class: "text-gray-600 text-sm mt-1 md:mt-0 md:text-right")
+                     content_tag(:div, education.year_range, class: "text-amber-600 text-sm mt-1 md:mt-0 md:text-right")
                    else
                      "".html_safe
                    end

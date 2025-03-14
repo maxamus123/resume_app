@@ -1,8 +1,8 @@
 <div class="bg-white shadow-xl rounded-lg overflow-hidden h-full flex flex-col" data-controller="chat">
-  <div class="bg-blue-700 text-white p-3 sm:p-4 flex justify-between items-center">
+  <div class="bg-teal-700 text-white p-3 sm:p-4 flex justify-between items-center">
     <div>
       <h2 class="text-lg sm:text-xl font-bold">Chat with Maxwell's Resume</h2>
-      <p class="text-blue-100 text-xs sm:text-sm">Evaluate Maxwell's qualifications and fit for your open positions.</p>
+      <p class="text-teal-100 text-xs sm:text-sm">Evaluate Maxwell's qualifications and fit for your open positions.</p>
     </div>
     <!-- Mobile Close Button -->
     <button id="chat-close" class="lg:hidden text-white" data-layout-target="chatClose" data-action="click->layout#closeChat">
@@ -14,7 +14,7 @@
   
   <div class="p-3 sm:p-4 flex-grow flex flex-col overflow-hidden">
     <div id="chat-messages" class="space-y-3 mb-3 sm:mb-4 flex-grow overflow-y-auto" data-chat-target="messages">
-      <div class="bg-blue-50 p-3 sm:p-4 rounded-lg">
+      <div class="bg-teal-50 p-3 sm:p-4 rounded-lg">
         <p class="font-medium text-gray-800 text-sm sm:text-base">AI Assistant</p>
         <p class="text-sm sm:text-base message-content" data-sender="AI Assistant">Hello! I'm Maxwell's AI assistant. I can help evaluate his fit for your open positions based on his experience in technical leadership, product strategy, and global team management. Ask me how his skills align with specific roles at your organization.</p>
       </div>
@@ -26,10 +26,10 @@
       <div class="questions-carousel relative">
         <div class="carousel-container overflow-hidden">
           <div class="carousel-track flex transition-transform duration-300" data-chat-target="carouselTrack">
-            <button type="button" class="suggested-question min-w-full px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-md transition-colors text-left" data-chat-target="suggestedQuestion" data-action="click->chat#selectQuestion">Why would Maxwell be an excellent fit for a Development Manager role?</button>
-            <button type="button" class="suggested-question min-w-full px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-md transition-colors text-left" data-chat-target="suggestedQuestion" data-action="click->chat#selectQuestion">How do Maxwell's technical leadership skills translate to Engineering Director positions?</button>
-            <button type="button" class="suggested-question min-w-full px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-md transition-colors text-left" data-chat-target="suggestedQuestion" data-action="click->chat#selectQuestion">What experience does Maxwell have with managing global technical teams?</button>
-            <button type="button" class="suggested-question min-w-full px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-md transition-colors text-left" data-chat-target="suggestedQuestion" data-action="click->chat#selectQuestion">How would Maxwell's product strategy background benefit our organization?</button>
+            <button type="button" class="suggested-question min-w-full px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm bg-slate-50 hover:bg-slate-100 text-gray-700 rounded-md transition-colors text-left" data-chat-target="suggestedQuestion" data-action="click->chat#selectQuestion">Why would Maxwell be an excellent fit for a Development Manager role?</button>
+            <button type="button" class="suggested-question min-w-full px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm bg-slate-50 hover:bg-slate-100 text-gray-700 rounded-md transition-colors text-left" data-chat-target="suggestedQuestion" data-action="click->chat#selectQuestion">How do Maxwell's technical leadership skills translate to Engineering Director positions?</button>
+            <button type="button" class="suggested-question min-w-full px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm bg-slate-50 hover:bg-slate-100 text-gray-700 rounded-md transition-colors text-left" data-chat-target="suggestedQuestion" data-action="click->chat#selectQuestion">What experience does Maxwell have with managing global technical teams?</button>
+            <button type="button" class="suggested-question min-w-full px-2 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm bg-slate-50 hover:bg-slate-100 text-gray-700 rounded-md transition-colors text-left" data-chat-target="suggestedQuestion" data-action="click->chat#selectQuestion">How would Maxwell's product strategy background benefit our organization?</button>
           </div>
         </div>
         <div class="flex justify-between mt-1 sm:mt-2">
@@ -39,7 +39,7 @@
             </svg>
           </button>
           <div class="carousel-indicators flex space-x-2">
-            <span class="carousel-dot h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-blue-600" data-chat-target="carouselDot" data-action="click->chat#goToSlide"></span>
+            <span class="carousel-dot h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-teal-600" data-chat-target="carouselDot" data-action="click->chat#goToSlide"></span>
             <span class="carousel-dot h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-gray-300" data-chat-target="carouselDot" data-action="click->chat#goToSlide"></span>
             <span class="carousel-dot h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-gray-300" data-chat-target="carouselDot" data-action="click->chat#goToSlide"></span>
             <span class="carousel-dot h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-gray-300" data-chat-target="carouselDot" data-action="click->chat#goToSlide"></span>
@@ -57,9 +57,9 @@
       <form id="chat-form" class="flex items-end gap-2" data-chat-target="form" data-action="submit->chat#submit">
         <div class="flex-grow">
           <label for="question" class="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Your Question</label>
-          <textarea id="question" name="question" rows="2" class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full text-sm border-gray-300 rounded-md resize-none" placeholder="Ask how Maxwell would fit a specific role..." data-chat-target="question"></textarea>
+          <textarea id="question" name="question" rows="2" class="shadow-sm focus:ring-teal-500 focus:border-teal-500 block w-full text-sm border-gray-300 rounded-md resize-none" placeholder="Ask how Maxwell would fit a specific role..." data-chat-target="question"></textarea>
         </div>
-        <button type="submit" class="inline-flex items-center px-2 py-2 sm:px-3 sm:py-2 border border-transparent text-xs sm:text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+        <button type="submit" class="inline-flex items-center px-2 py-2 sm:px-3 sm:py-2 border border-transparent text-xs sm:text-sm font-medium rounded-md shadow-sm text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">
           Send
         </button>
       </form>

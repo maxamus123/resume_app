@@ -9,12 +9,12 @@ module ExperiencesHelper
         # Position and company
         position_div = content_tag(:div) do
           title = content_tag(:h3, experience.position, class: "text-base sm:text-lg font-semibold text-gray-800")
-          company = content_tag(:p, experience.company, class: "text-blue-600 font-medium text-sm sm:text-base")
+          company = content_tag(:p, experience.company, class: "text-teal-600 font-medium text-sm sm:text-base")
           title + company
         end
         
         # Date range
-        date_div = content_tag(:div, experience.date_range, class: "text-gray-600 text-sm mt-1 md:mt-0 md:text-right")
+        date_div = content_tag(:div, experience.date_range, class: "text-amber-600 text-sm mt-1 md:mt-0 md:text-right")
         
         position_div + date_div
       end

@@ -56,7 +56,7 @@ export default class extends Controller {
     if (!question) return;
 
     this.addMessage("You", question, "bg-gray-100");
-    const loadingId = this.addMessage("AI Assistant", "Thinking...", "bg-blue-50");
+    const loadingId = this.addMessage("AI Assistant", "Thinking...", "bg-teal-50");
     this.questionTarget.value = "";
 
     // Helper to get the AI message element
@@ -143,7 +143,7 @@ export default class extends Controller {
   updateCarousel() {
     this.carouselTrackTarget.style.transform = `translateX(-${this.currentSlide * 100}%)`;
     this.carouselDotTargets.forEach((dot, i) => {
-      dot.classList.toggle("bg-blue-600", i === this.currentSlide);
+      dot.classList.toggle("bg-teal-600", i === this.currentSlide);
       dot.classList.toggle("bg-gray-300", i !== this.currentSlide);
     });
   }

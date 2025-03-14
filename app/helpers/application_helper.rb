@@ -1,6 +1,6 @@
 module ApplicationHelper
   def section_heading(title, options = {})
-    css = options[:class] || "text-lg sm:text-xl font-bold text-gray-800 border-b-2 border-blue-200 pb-2 mb-3 sm:mb-4"
+    css = options[:class] || "text-lg sm:text-xl font-bold text-gray-800 border-b-2 border-teal-200 pb-2 mb-3 sm:mb-4"
     content_tag(:h2, title, class: css)
   end
 
@@ -18,7 +18,7 @@ module ApplicationHelper
   end
 
   def badge_tag(text, options = {})
-    css = options[:class] || "bg-gray-100 rounded-lg px-2 sm:px-3 py-1"
+    css = options[:class] || "bg-slate-100 rounded-lg px-2 sm:px-3 py-1"
     content_tag(:div, class: css) do
       content_tag(:span, text, class: "font-medium text-xs sm:text-sm")
     end

@@ -38,7 +38,7 @@ module SharedHelper
     return unless profile.contact_info[contact_type].present?
     
     item_class = options[:item_class] || "flex items-center mr-4 sm:mr-6 mb-2"
-    text_class = options[:text_class] || "text-sm sm:text-base text-blue-100 hover:text-white transition duration-150"
+    text_class = options[:text_class] || "text-sm sm:text-base text-teal-100 hover:text-white transition duration-150"
     
     content_tag(:div, class: item_class) do
       icon = contact_icon(contact_type, class: options[:icon_class])
@@ -60,17 +60,17 @@ module SharedHelper
   def skill_tag(skill, options = {})
     item_class = options[:item_class] || "px-3 py-2 sm:px-4 sm:py-2"
     
-    content_tag(:div, class: "group relative bg-gray-100 hover:bg-gray-200 rounded-lg transition duration-200 border-b-2 border-blue-600") do
+    content_tag(:div, class: "group relative bg-gray-100 hover:bg-gray-200 rounded-lg transition duration-200 border-b-2 border-teal-600") do
       inner = content_tag(:div, class: item_class) do
         content_tag(:span, skill.name, class: "font-medium text-xs sm:text-sm")
       end
       
-      tooltip = content_tag(:div, class: "absolute z-10 left-1/2 transform -translate-x-1/2 bottom-full mb-1 invisible group-hover:visible bg-blue-600 text-white text-xs rounded py-1 px-2 whitespace-nowrap shadow-lg") do
+      tooltip = content_tag(:div, class: "absolute z-10 left-1/2 transform -translate-x-1/2 bottom-full mb-1 invisible group-hover:visible bg-teal-600 text-white text-xs rounded py-1 px-2 whitespace-nowrap shadow-lg") do
         # Create the tooltip content
         tooltip_text = content_tag(:span, skill.proficiency_tooltip)
         
         # Create the arrow separately
-        arrow = content_tag(:div, "", class: "absolute top-full left-1/2 transform -translate-x-1/2 w-2 h-2 rotate-45 bg-blue-600")
+        arrow = content_tag(:div, "", class: "absolute top-full left-1/2 transform -translate-x-1/2 w-2 h-2 rotate-45 bg-teal-600")
         
         # Combine them in safe HTML
         tooltip_text + arrow

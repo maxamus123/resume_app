@@ -1,8 +1,8 @@
 module ChatHelper
   # Generate a message bubble for the chat interface
   def chat_message(sender, content, options = {})
-    sender_class = sender.downcase == 'ai assistant' ? 'text-blue-800' : 'text-gray-800'
-    bg_class = sender.downcase == 'ai assistant' ? 'bg-blue-50' : 'bg-gray-100'
+    sender_class = sender.downcase == 'ai assistant' ? 'text-teal-800' : 'text-gray-800'
+    bg_class = sender.downcase == 'ai assistant' ? 'bg-teal-50' : 'bg-gray-100'
     
     content_tag(:div, class: "#{bg_class} p-2 sm:p-3 rounded-lg #{options[:additional_classes]}") do
       sender_element = content_tag(:p, sender, class: "font-medium #{sender_class} text-sm sm:text-base")
@@ -36,18 +36,18 @@ module ChatHelper
   end
   
   # Generate a carousel indicator dot
-  def carousel_indicator(active = false, options = {})
-    active_class = active ? 'bg-blue-600' : 'bg-gray-300'
-    dot_class = "carousel-dot h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full #{active_class}"
+  def carousel_dot(active: false, options: {})
+    active_class = active ? 'bg-teal-600' : 'bg-gray-300'
+    css_class = "carousel-dot h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full #{active_class}"
     
-    content_tag(:span, nil, class: dot_class)
+    content_tag(:span, nil, class: css_class)
   end
   
   # Generate carousel indicators for a given number of items
   def carousel_indicators(total, active_index = 0)
     content_tag(:div, class: "carousel-indicators flex space-x-2") do
       (0...total).map do |i|
-        carousel_indicator(i == active_index)
+        carousel_dot(active: i == active_index)
       end.join.html_safe
     end
   end
