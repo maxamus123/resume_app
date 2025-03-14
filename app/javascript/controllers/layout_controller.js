@@ -21,9 +21,9 @@ export default class extends Controller {
     if (window.innerWidth >= 1024) { // lg breakpoint in Tailwind
       // On desktop: Always show chat panel
       this.chatPanelTarget.classList.remove('translate-y-full')
-      // Show toggle on desktop (though it's hidden in CSS)
+      // Hide toggle on desktop since chat is always visible
       if (this.hasChatToggleContainerTarget) {
-        this.chatToggleContainerTarget.style.display = 'block'
+        this.chatToggleContainerTarget.style.display = 'none'
       }
     } else {
       // On mobile: Hide by default unless explicitly opened
