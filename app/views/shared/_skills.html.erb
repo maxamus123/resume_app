@@ -1,0 +1,22 @@
+<h2 class="<%= local_assigns[:title_class] || 'text-xl sm:text-2xl font-bold text-gray-800 border-b-2 border-blue-200 pb-2 mb-3 sm:mb-4' %>">Skills</h2>
+
+<% @skills.each do |category, skills| %>
+  <div class="<%= local_assigns[:container_class] || 'mb-5 sm:mb-6' %>">
+    <h3 class="<%= local_assigns[:subtitle_class] || 'text-lg sm:text-xl font-semibold text-gray-800 mb-2 sm:mb-3' %>"><%= category %></h3>
+    <div class="flex flex-wrap gap-2 sm:gap-3">
+      <% skills.each do |skill| %>
+        <div class="group relative bg-gray-100 hover:bg-gray-200 rounded-lg transition duration-200 border-b-2 border-blue-600">
+          <div class="<%= local_assigns[:item_class] || 'px-3 py-2 sm:px-4 sm:py-2' %>">
+            <span class="font-medium text-xs sm:text-sm"><%= skill.name %></span>
+          </div>
+          <!-- Tooltip that appears on hover -->
+          <div class="absolute z-10 left-1/2 transform -translate-x-1/2 bottom-full mb-1 invisible group-hover:visible bg-blue-600 text-white text-xs rounded py-1 px-2 whitespace-nowrap shadow-lg">
+            Proficiency: <%= skill.proficiency %>/5
+            <!-- Arrow pointing down -->
+            <div class="absolute top-full left-1/2 transform -translate-x-1/2 w-2 h-2 rotate-45 bg-blue-600"></div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %> 
