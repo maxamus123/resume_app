@@ -149,31 +149,43 @@ document.addEventListener('DOMContentLoaded', function() {
     const question = questionInput.value.trim();
     if (!question) return;
     
-    // Add user message to chat - this should stay visible throughout
+    // Add user message to chat
     addMessage('You', question, 'bg-gray-100');
     
-    // Show loading indicator
-    const loadingId = addMessage('AI Assistant', 'Thinking...', 'bg-blue-50');
+    // Create a new message bubble for the AI response
+    const loadingId = addMessage('AI Assistant', '', 'bg-blue-50');
     
-    // Send request to server
-    fetch('/chat/message', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
-      },
-      body: JSON.stringify({ question: question })
-    })
-    .then(response => response.json())
-    .then(data => {
-      // Replace only the loading message with response
-      removeMessage(loadingId);
-      addMessage('AI Assistant', data.response, 'bg-blue-50');
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      removeMessage(loadingId);
-      addMessage('AI Assistant', 'Sorry, I encountered an error processing your request.', 'bg-red-50');
+    // Get the current message element for streaming updates
+    const loadingElement = document.getElementById(loadingId).querySelector('p:nth-child(2)');
+    
+    // Use Server-Sent Events for streaming
+    const eventSource = new EventSource(`/chat/stream_message?question=${encodeURIComponent(question)}`);
+    
+    let responseText = '';
+    
+    eventSource.addEventListener('start', function(e) {
+      // Initialize the streaming message
+      loadingElement.textContent = '';
+    });
+    
+    eventSource.addEventListener('message', function(e) {
+      // Append the chunk to our accumulated response
+      responseText += JSON.parse(e.data);
+      loadingElement.textContent = responseText;
+      
+      // Scroll to see new content
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    });
+    
+    eventSource.addEventListener('error', function(e) {
+      console.error('SSE Error:', e);
+      loadingElement.textContent = 'Sorry, I encountered an error processing your request.';
+      eventSource.close();
+    });
+    
+    eventSource.addEventListener('done', function(e) {
+      // Complete the streaming response
+      eventSource.close();
     });
     
     // Clear input
