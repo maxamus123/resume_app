@@ -2,72 +2,41 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["chatPanel", "chatToggle", "chatToggleContainer", "chatClose"]
-  
+
   connect() {
     this.isChatOpen = false
-    this.handleResponsiveLayout()
-    
-    // Listen for window resize and adjust layout accordingly
-    window.addEventListener('resize', this.handleResponsiveLayout.bind(this))
+    this.boundUpdateDisplay = this.updateDisplay.bind(this)
+    this.updateDisplay()
+    window.addEventListener('resize', this.boundUpdateDisplay)
   }
-  
+
   disconnect() {
-    // Clean up event listener
-    window.removeEventListener('resize', this.handleResponsiveLayout.bind(this))
+    window.removeEventListener('resize', this.boundUpdateDisplay)
   }
-  
-  // Function to handle responsive layout
-  handleResponsiveLayout() {
-    if (window.innerWidth >= 1024) { // lg breakpoint in Tailwind
-      // On desktop: Always show chat panel
+
+  updateDisplay() {
+    if (window.innerWidth >= 1024) { // Desktop
       this.chatPanelTarget.classList.remove('translate-y-full')
-      // Hide toggle on desktop since chat is always visible
-      if (this.hasChatToggleContainerTarget) {
-        this.chatToggleContainerTarget.style.display = 'none'
-      }
-    } else {
-      // On mobile: Hide by default unless explicitly opened
-      if (!this.isChatOpen) {
-        this.chatPanelTarget.classList.add('translate-y-full')
-        // Show toggle when chat is closed
-        if (this.hasChatToggleContainerTarget) {
-          this.chatToggleContainerTarget.style.display = 'block'
-        }
-      } else {
-        // Hide toggle when chat is open
-        if (this.hasChatToggleContainerTarget) {
-          this.chatToggleContainerTarget.style.display = 'none'
-        }
-      }
+      this.setToggleDisplay('none')
+    } else { // Mobile
+      this.chatPanelTarget.classList.toggle('translate-y-full', !this.isChatOpen)
+      this.setToggleDisplay(this.isChatOpen ? 'none' : 'block')
     }
   }
-  
-  // Toggle chat panel visibility
+
+  setToggleDisplay(value) {
+    if (this.hasChatToggleContainerTarget) {
+      this.chatToggleContainerTarget.style.display = value
+    }
+  }
+
   toggleChat() {
     this.isChatOpen = !this.isChatOpen
-    
-    if (this.isChatOpen) {
-      this.chatPanelTarget.classList.remove('translate-y-full')
-      // Hide toggle when chat is open
-      if (this.hasChatToggleContainerTarget) {
-        this.chatToggleContainerTarget.style.display = 'none'
-      }
-    } else {
-      this.chatPanelTarget.classList.add('translate-y-full')
-      // Show toggle when chat is closed
-      if (this.hasChatToggleContainerTarget) {
-        this.chatToggleContainerTarget.style.display = 'block'
-      }
-    }
+    this.updateDisplay()
   }
-  
-  // Close chat panel
+
   closeChat() {
     this.isChatOpen = false
-    this.chatPanelTarget.classList.add('translate-y-full')
-    // Show toggle when chat is closed
-    if (this.hasChatToggleContainerTarget) {
-      this.chatToggleContainerTarget.style.display = 'block'
-    }
+    this.updateDisplay()
   }
-} 
+}
