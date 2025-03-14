@@ -168,7 +168,10 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.3-x86_64-linux-gnu)
       racc (~> 1.4)
+    ostruct (0.6.1)
     parallel (1.24.0)
+    parallel_tests (5.1.0)
+      parallel
     parser (3.3.0.5)
       ast (~> 2.4.1)
       racc
@@ -294,6 +297,10 @@ GEM
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    wicked_pdf (2.8.2)
+      activesupport
+      ostruct
+    wkhtmltopdf-binary (0.12.6.8)
     zeitwerk (2.6.18)
 
 PLATFORMS
@@ -312,6 +319,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   jwt
+  parallel_tests
   pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 7.1.5, >= 7.1.5.1)
@@ -324,6 +332,8 @@ DEPENDENCIES
   turbo-rails
   tzinfo-data
   web-console
+  wicked_pdf
+  wkhtmltopdf-binary
 
 RUBY VERSION
    ruby 3.1.3p185

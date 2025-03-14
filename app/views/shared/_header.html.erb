@@ -1,0 +1,19 @@
+<div class="<%= local_assigns[:header_container_class] || 'bg-teal-700 text-white p-5 sm:p-8' %>">
+  <div class="<%= local_assigns[:title_container_class] || 'flex justify-between items-start' %>">
+    <div>
+      <h1 class="<%= local_assigns[:name_class] || 'text-2xl sm:text-4xl font-bold' %>"><%= @profile.name %></h1>
+      <p class="<%= local_assigns[:title_class] || 'text-lg sm:text-xl mt-2 text-teal-100' %>"><%= @profile.title %></p>
+    </div>
+  </div>
+  
+  <% if @profile.has_contact_info? %>
+    <div class="<%= local_assigns[:contact_container_class] || 'mt-3 sm:mt-4 flex flex-wrap items-center text-teal-100' %>">
+      <% @profile.contact_info.each do |type, value| %>
+        <%= contact_item(@profile, type, 
+            item_class: local_assigns[:contact_item_class],
+            icon_class: local_assigns[:icon_class],
+            text_class: local_assigns[:contact_text_class]) %>
+      <% end %>
+    </div>
+  <% end %>
+</div> 

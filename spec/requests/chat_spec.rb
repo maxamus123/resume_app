@@ -1,18 +1,25 @@
 require 'rails_helper'
 
-RSpec.describe "Chats", type: :request do
-  describe "GET /index" do
+RSpec.describe "Chat", type: :request do
+  describe "GET /chat" do
     it "returns http success" do
-      get "/chat/index"
+      get "/chat"
       expect(response).to have_http_status(:success)
     end
   end
 
-  describe "GET /message" do
+  describe "POST /chat/message" do
     it "returns http success" do
-      get "/chat/message"
+      # Mock a valid message post
+      post "/chat/message", params: { message: "What are your skills?" }
       expect(response).to have_http_status(:success)
     end
   end
-
+  
+  describe "GET /chat/stream_message" do
+    it "returns http success" do
+      get "/chat/stream_message"
+      expect(response).to have_http_status(:success)
+    end
+  end
 end

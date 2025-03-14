@@ -53,9 +53,30 @@ development:
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
-test:
+test: &test
   <<: *default
+  database: resume_app_test<%= ENV['TEST_ENV_NUMBER'] %>
+
+# For parallel testing support
+test_0:
+  <<: *test
   database: resume_app_test
+
+test_1:
+  <<: *test
+  database: resume_app_test1
+
+test_2:
+  <<: *test
+  database: resume_app_test2
+
+test_3:
+  <<: *test
+  database: resume_app_test3
+
+test_4:
+  <<: *test
+  database: resume_app_test4
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is

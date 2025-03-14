@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Resume</title>
+  <%= wicked_pdf_stylesheet_link_tag "application" %>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      color: #333;
+      line-height: 1.5;
+    }
+    h1, h2, h3, h4 {
+      color: #2563eb;
+      margin-top: 16px;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 24px;
+      text-align: center;
+      color: #1e40af;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 8px;
+    }
+    h2 {
+      font-size: 18px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 4px;
+    }
+    h3 {
+      font-size: 16px;
+    }
+    .section {
+      margin-bottom: 16px;
+    }
+    .position {
+      font-weight: bold;
+    }
+    .company {
+      color: #2563eb;
+    }
+    .date {
+      color: #666;
+      font-style: italic;
+    }
+    .contact-info {
+      text-align: center;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+    .skill-category {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .skill-list {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <%= yield %>
+  </div>
+</body>
+</html> 
