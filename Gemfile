@@ -35,6 +35,10 @@ gem "faraday"
 # JSON Web Token for secure API authentication
 gem "jwt"
 
+# PDF generation
+gem "wicked_pdf"
+gem "wkhtmltopdf-binary"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 

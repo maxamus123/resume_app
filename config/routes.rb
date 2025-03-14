@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   post 'chat/message', to: 'chat#message'
   get 'chat/stream_message', to: 'chat#stream_message'
   
+  # Resume PDF download - moved above other routes to ensure correct routing
+  get 'resume.pdf', to: 'home#resume_pdf', as: 'resume_pdf'
+  
   # Set interactive view as the root
   root 'home#interactive'
   
