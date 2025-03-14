@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "Educations", type: :request do
-  describe "GET /index" do
+  describe "GET /educations" do
     it "returns http success" do
-      get "/educations/index"
+      get "/educations"
       expect(response).to have_http_status(:success)
     end
   end

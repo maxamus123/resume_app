@@ -73,6 +73,9 @@ group :development, :test do
   # Dotenv for managing environment variables
   gem "dotenv-rails"
   gem 'rubocop', require: false
+  
+  # Parallel testing
+  gem 'parallel_tests'
 end
 
 group :development do

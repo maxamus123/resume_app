@@ -170,6 +170,8 @@ GEM
       racc (~> 1.4)
     ostruct (0.6.1)
     parallel (1.24.0)
+    parallel_tests (5.1.0)
+      parallel
     parser (3.3.0.5)
       ast (~> 2.4.1)
       racc
@@ -317,6 +319,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   jwt
+  parallel_tests
   pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 7.1.5, >= 7.1.5.1)
