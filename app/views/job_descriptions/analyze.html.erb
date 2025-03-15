@@ -1,0 +1,114 @@
+<!-- Wrap everything in a main-content div for Turbo Stream replacement -->
+<div id="main-content">
+<div class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+  <div class="mb-6 flex justify-between items-center">
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Job Fit Analysis</h1>
+      <p class="text-gray-600"><%= @job_description.title %> at <%= @job_description.company.present? ? @job_description.company : "the company" %></p>
+    </div>
+    <div>
+      <%= link_to "Analyze Another Job", upload_job_description_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500" %>
+    </div>
+  </div>
+  
+  <% if @job_description.document.attached? %>
+    <div class="bg-gray-50 border border-gray-200 rounded-md p-4 mb-6">
+      <h2 class="font-medium text-gray-800">Uploaded Document</h2>
+      <p class="text-sm text-gray-600">
+        <span class="font-medium">Filename:</span> <%= @job_description.document.filename %>
+        <span class="ml-4 font-medium">Size:</span> <%= number_to_human_size(@job_description.document.byte_size) %>
+      </p>
+    </div>
+  <% end %>
+  
+  <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+    <div class="bg-teal-700 text-white px-6 py-4">
+      <h2 class="text-xl font-bold">Analysis Results</h2>
+    </div>
+    
+    <div class="p-6">
+      <% if @analysis.present? && @analysis != "Sorry, I couldn't analyze this job description. Please try again." %>
+        <div class="prose max-w-none">
+          <!-- Convert line breaks to <br> tags and preserve formatting -->
+          <%= simple_format(@analysis, class: "text-gray-800 leading-relaxed") %>
+        </div>
+      <% else %>
+        <div class="text-center py-10">
+          <svg class="mx-auto h-12 w-12 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <h3 class="mt-2 text-lg font-medium text-gray-900">Analysis Error</h3>
+          <p class="mt-1 text-gray-500">We encountered a problem analyzing this job description.</p>
+          <div class="mt-4">
+            <p class="text-sm text-gray-500">This could be due to:</p>
+            <ul class="mt-2 list-disc text-sm text-gray-500 pl-5 text-left max-w-md mx-auto">
+              <li>The uploaded document format is not fully supported</li>
+              <li>The document may be password protected or encrypted</li>
+              <li>Our AI service encountered a temporary issue</li>
+            </ul>
+            <div class="mt-4">
+              <%= link_to "Try Again", upload_job_description_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  
+  <div class="mt-8 flex justify-between">
+    <div>
+      <%= link_to "Back to Upload", upload_job_description_path, class: "text-teal-600 hover:text-teal-900" %>
+    </div>
+    <div>
+      <%= link_to "Return to Resume", root_path, class: "text-teal-600 hover:text-teal-900" %>
+    </div>
+  </div>
+  
+  <div class="mt-8 border-t border-gray-200 pt-4">
+    <p class="text-xs text-gray-500 text-center">This analysis is AI-generated and should be used as a reference point rather than a definitive evaluation.</p>
+  </div>
+</div>
+</div>
+
+<!-- Hidden loading overlay -->
+<div id="loading-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden z-50" style="display: none;">
+  <div class="bg-white p-6 rounded-lg shadow-xl max-w-md mx-auto text-center">
+    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-teal-500 border-opacity-100 border-b-4 mx-auto"></div>
+    <p class="mt-4 text-lg font-medium text-gray-900">Analyzing document...</p>
+    <p class="mt-2 text-sm text-gray-600">This may take 15-20 seconds. Please don't close this page.</p>
+  </div>
+</div>
+
+<script>
+  // Close any loading overlays that might still be showing
+  document.addEventListener('DOMContentLoaded', function() {
+    // Check for the loading overlay from the previous page
+    const loadingOverlay = document.getElementById('loading-overlay');
+    if (loadingOverlay) {
+      loadingOverlay.classList.add('hidden');
+      loadingOverlay.classList.remove('flex');
+      loadingOverlay.style.display = 'none';
+    }
+    
+    // Also ensure parent windows know we're done loading
+    if (window.parent && window.parent.document) {
+      const parentOverlay = window.parent.document.getElementById('loading-overlay');
+      if (parentOverlay) {
+        parentOverlay.classList.add('hidden');
+        parentOverlay.classList.remove('flex');
+        parentOverlay.style.display = 'none';
+      }
+    }
+    
+    // Add event listener for turbo:load events
+    document.addEventListener('turbo:load', function() {
+      // Hide loading overlay again (in case of Turbo navigation)
+      if (loadingOverlay) {
+        loadingOverlay.classList.add('hidden');
+        loadingOverlay.classList.remove('flex');
+        loadingOverlay.style.display = 'none';
+      }
+    });
+  });
+</script>
+

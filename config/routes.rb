@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  # Job description analysis routes
+  get 'job_descriptions/upload', to: 'job_descriptions#upload', as: 'upload_job_description'
+  post 'job_descriptions/analyze', to: 'job_descriptions#analyze', as: 'analyze_job_description'
+  
   # Chat feature routes
   get 'chat', to: 'chat#index'
   post 'chat/message', to: 'chat#message'
