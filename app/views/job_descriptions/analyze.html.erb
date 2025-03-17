@@ -29,8 +29,8 @@
     <div class="p-6">
       <% if @analysis.present? && @analysis != "Sorry, I couldn't analyze this job description. Please try again." %>
         <div class="prose max-w-none">
-          <!-- Convert line breaks to <br> tags and preserve formatting -->
-          <%= simple_format(@analysis, class: "text-gray-800 leading-relaxed") %>
+          <!-- Replace simple_format with markdown helper -->
+          <%= markdown(@analysis) %>
         </div>
       <% else %>
         <div class="text-center py-10">
